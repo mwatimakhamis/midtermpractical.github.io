@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <p>Form</p>
+    <title>Link Generator</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Link Generator</h1>
+    <form id="linkForm">
+        <label for="startRange">Start Range:</label>
+        <input type="number" id="startRange" value="1">
+        <label for="endRange">End Range:</label>
+        <input type="number" id="endRange" value="1">
+        <br>
+        <br>
+        <button type="submit">Display Table</button>
+        <br>
+        <br>
+    </form>
+
+    <table id="linkTable">
+        <tr>
+            <th>Links</th>
+        </tr>
+    </table>
+
+    <script>
+        let data = ["syllabus.html", "p1.html", "p2.html", "style.html", "email.html", "system.html", "process.html"];
+
+        function displayTable(event) {
+            event.preventDefault();
+
+            // Clear previous table rows
+            const table = document.getElementById("linkTable");
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+
+            const startRange = parseInt(document.getElementById("startRange").value);
+            const endRange = parseInt(document.getElementById("endRange").value);
+
+            const isValidRange = startRange >= 1 && endRange >= startRange && endRange <= data.length;
+
+            if (!isValidRange) {
+                const message = `Invalid range, valid range: 1-${data.length}`;
+                const row = table.insertRow(1);
+                const cell = row.insertCell(0);
+                cell.textContent = message;
+                cell.colSpan = 2;
+            } else {
+                for (let i = startRange - 1; i < endRange; i++) {
+                    const link = data[i];
+                    const row = table.insertRow(-1);
+                    const cell = row.insertCell(0);
+                    const anchor = document.createElement("a");
+                    anchor.href = link;
+                    anchor.textContent = link;
+                    cell.appendChild(anchor);
+                }
+            }
+        }
+
+        function main() {
+            const linkForm = document.getElementById("linkForm");
+            linkForm.addEventListener("submit", displayTable);
+
+            const endRange = data.length;
+            const rangeMessage = `Valid Range: 1-${endRange}`;
+            const row = document.getElementById("linkTable").insertRow(1);
+            const cell = row.insertCell(0);
+            cell.textContent = rangeMessage;
+            cell.colSpan = 2;
+        }
+
+        main();
+    </script>
+</body>
+</html>
